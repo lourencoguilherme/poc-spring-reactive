@@ -1,0 +1,29 @@
+spring.output.ansi.enabled: always
+
+management:
+  endpoints.web.exposure.include: '*' # health,info,prometheus
+  metrics.distribution.percentiles-histogram.http.server.requests: true
+
+  tracing:
+    enabled: true
+    sampling.probability: 1.0
+
+  zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
+
+customer-service:
+  http-client:
+    read-timeout: 3000
+    write-timeout: 3000
+    connect-timeout: 3000
+    response-timeout: 3000
+  retry:
+    max-retry: 3
+    retry-interval: 3000
+  urls:
+    base-url: http://localhost:8081/
+    get-customer-url: /test-factory/{id}
+
+logging:
+  level:
+    com.github.wenqiglantz.service.customerserviceclient.customerclient: TRACE
+  pattern.level: "trace_id=%mdc{traceId} span_id=%mdc{spanId} trace_flags=%mdc{traceFlags} %p"
