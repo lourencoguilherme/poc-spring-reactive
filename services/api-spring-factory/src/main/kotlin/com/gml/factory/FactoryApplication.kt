@@ -1,7 +1,6 @@
 package com.gml.factory
 
 import io.micrometer.observation.ObservationRegistry
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.reactor.awaitSingle
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.client.WebClient
-import kotlin.time.Duration.Companion.seconds
 
 @SpringBootApplication
 class TracingApplication
@@ -26,7 +24,7 @@ class Controller(
 ) {
 
     val webClient = webClientBuilder
-        .baseUrl("http://jsonplaceholder.typicode.com")
+        .baseUrl("http://localhost:4000")
         .build()
 
     val log = LoggerFactory.getLogger(javaClass)
@@ -34,14 +32,16 @@ class Controller(
     @GetMapping("/test-factory/{id}")
     suspend fun test(@PathVariable id: Long): String {
         val currentObservation = observationRegistry.currentObservation
-        observeCtx {
+        /*observeCtx {
             currentObservation?.highCardinalityKeyValue("test_key", "test sample value")
             log.info("test log with tracing info")
-        }
+        }*/
 
-        observationRegistry.runObserved("delay") {
+        /*observationRegistry.runObserved("delay") {
             delay(1.seconds)
-        }
+        }*/
+
+        //map[id]?.let { return it }
 
         // make web client call and return response
         val externalTodos = webClient.get()
@@ -50,6 +50,10 @@ class Controller(
             .bodyToMono(String::class.java)
             .awaitSingle()
 
+        //map[id] = "$externalTodos"
+
         return "$externalTodos"
     }
+
+    val map = mutableMapOf<Long, String>()
 }
