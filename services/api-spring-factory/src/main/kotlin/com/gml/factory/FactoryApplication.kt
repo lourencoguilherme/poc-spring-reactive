@@ -24,7 +24,7 @@ class Controller(
 ) {
 
     val webClient = webClientBuilder
-        .baseUrl("http://localhost:4000")
+        .baseUrl("http://jsonplaceholder.typicode.com")
         .build()
 
     val log = LoggerFactory.getLogger(javaClass)

@@ -17,6 +17,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 repositories {
     mavenCentral()
     maven("https://repo.spring.io/snapshot")
+    gradlePluginPortal()
 }
 
 dependencies {
@@ -48,4 +49,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+graalvmNative {
+    testSupport.set(false)
 }
