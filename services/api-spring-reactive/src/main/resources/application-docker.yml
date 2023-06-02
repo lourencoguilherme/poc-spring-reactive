@@ -1,0 +1,34 @@
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        data:
+#          r2dbc: DEBUG
+#
+#spring:
+#  main:
+#    allow-bean-definition-overriding: true
+#  r2dbc:
+#    name: sa
+#    password:
+#    url: r2dbc:h2:mem:///pocdb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    initialization-mode: always
+
+management:
+  endpoints.web.exposure.include: '*' # health,info,prometheus
+  metrics.distribution.percentiles-histogram.http.server.requests: true
+
+  tracing:
+    enabled: true
+    sampling.probability: 1.0
+
+  zipkin.tracing.endpoint: http://host.docker.internal/api/v2/spans
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+factory:
+  api:
+    url: http://host.docker.internal:8081

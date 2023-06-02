@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: nginx
+  name: webserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: webserver
   template:
     metadata:
       labels:
-        app: nginx
+        app: webserver
     spec:
       containers:
-        - name: nginx
-          image: caddy
+        - name: webserver
+          image: gml/poc:0.0.2-SNAPSHOT
           ports:
-            - containerPort: 80
+            - containerPort: 8080

@@ -1,0 +1,36 @@
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        data:
+#          r2dbc: DEBUG
+#
+#spring:
+#  main:
+#    allow-bean-definition-overriding: true
+#  r2dbc:
+#    name: sa
+#    password:
+#    url: r2dbc:h2:mem:///pocdb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    initialization-mode: always
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+management:
+  endpoints.web.exposure.include: '*' # health,info,prometheus
+  metrics.distribution.percentiles-histogram.http.server.requests: true
+
+  tracing:
+    enabled: true
+    sampling.probability: 1.0
+
+  zipkin.tracing.endpoint: http://localhost:9411/api/v2/spans
+
+logging.pattern.level: "trace_id=%mdc{traceId} span_id=%mdc{spanId} trace_flags=%mdc{traceFlags} %p"
+
+factory:
+  api:
+    url: http://localhost:8081
