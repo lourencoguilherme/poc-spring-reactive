@@ -1,0 +1,14 @@
+version: '3'
+services:
+  openzipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+
+  mockup-api:
+    image: mockoon/cli:latest
+    ports:
+      - "10090:10090"
+    volumes:
+      - ./samples-mock/mockup-api.json:/data
+    command: -d data -p 10090
