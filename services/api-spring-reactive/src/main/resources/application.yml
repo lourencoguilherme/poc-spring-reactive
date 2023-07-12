@@ -34,3 +34,6 @@ logging.pattern.level: "trace_id=%mdc{traceId} span_id=%mdc{spanId} trace_flags=
 factory:
   api:
     url: http://localhost:8081
+users:
+  api:
+    url: http://localhost:10090
