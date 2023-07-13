@@ -1,5 +1,6 @@
 package com.example.springbootkotlinreactiveexample.domain.user.repository.impl
 
+import com.example.springbootkotlinreactiveexample.domain.user.model.User
 import com.example.springbootkotlinreactiveexample.domain.user.repository.entity.UserEntity
 import com.example.springbootkotlinreactiveexample.domain.user.repository.UserRepository
 import com.example.springbootkotlinreactiveexample.util.find
@@ -21,15 +22,12 @@ class UserRepositoryImpl(
         .baseUrl("$factoryUrl")
         .build()
 
-    override suspend fun findAllUsers(): List<UserEntity> {
+    override suspend fun findAllUsers(): List<User> {
         println("---> " + "just")
         val uri = "/users";
-        val externalTodos = webClient.get()
-            .uri(uri)
-            .retrieve()
-            .awaitBody<MutableList<UserEntity>>()
+        val responseEntity = webClient.find<MutableList<UserEntity>>(uri)
 
-        return externalTodos.toList()
+        return responseEntity?.map { it.toUser() } ?: emptyList()
     }
 
 
