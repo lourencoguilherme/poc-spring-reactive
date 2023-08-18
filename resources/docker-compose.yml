@@ -12,3 +12,48 @@ services:
     volumes:
       - ./samples-mock/mockup-api.json:/data
     command: -d data -p 10090
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=dynamodb,s3,sqs,sns
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_DEFAULT_REGION=us-east-1
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "./.localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      DYNAMO_ENDPOINT: "http://localstack:4566"
+      AWS_REGION: "us-east-1"
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+    depends_on:
+      - localstack
+
+  awscli:
+    image: banst/awscli
+    container_name: awscli-docker
+    depends_on:
+      - localstack
+    environment:
+      AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
+      AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
+      AWS_DEFAULT_REGION: 'us-east-1'
+    command:
+      'dynamodb create-table
+      --table-name users
+      --attribute-definitions AttributeName=userId,AttributeType=S
+      --key-schema AttributeName=userId,KeyType=HASH
+      --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5
+      --endpoint-url http://host.docker.internal:4566'

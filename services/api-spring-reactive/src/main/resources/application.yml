@@ -37,3 +37,11 @@ factory:
 users:
   api:
     url: http://localhost:10090
+
+app:
+  aws:
+    region: "us-east-1"
+    dynamodb:
+      endpoint: "http://localhost:4566"
+      tables:
+        users: "users"

@@ -77,6 +77,7 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-spring-boot3")
     implementation("io.github.resilience4j:resilience4j-all") // Optional, only required when you want to use the Decorators class
     implementation("io.github.resilience4j:resilience4j-reactor")
+    implementation("software.amazon.awssdk:dynamodb-enhanced:2.13.24")
 }
 
 tasks.withType<KotlinCompile> {
