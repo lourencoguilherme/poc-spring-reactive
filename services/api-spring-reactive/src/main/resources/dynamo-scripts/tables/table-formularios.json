@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "formularioId",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "formularios",
+  "KeySchema": [
+    {
+      "AttributeName": "formularioId",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

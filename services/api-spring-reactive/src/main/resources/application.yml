@@ -18,6 +18,8 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  jackson:
+    default-property-inclusion: non_null
 
 management:
   endpoints.web.exposure.include: '*' # health,info,prometheus
@@ -46,3 +48,4 @@ app:
       tables:
         students: "students"
         processos: "processos"
+        formularios: "formularios"

@@ -1,7 +1,7 @@
 package com.example.springbootkotlinreactiveexample.domain.processos.repository
 
 import com.example.springbootkotlinreactiveexample.domain.processos.dao.Processo
-import com.example.springbootkotlinreactiveexample.domain.student.repository.StudentRepositoryImpl
+import com.example.springbootkotlinreactiveexample.domain.formulario.repository.FormularioRepositoryImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -23,7 +23,7 @@ class ProcessoRepositoryImpl(
 
     private val mappedTable: DynamoDbAsyncTable<Processo> =
         dynamoDbEnhancedClient.table(tableName, TableSchema.fromBean(Processo::class.java))
-    val logger: Logger = LoggerFactory.getLogger(StudentRepositoryImpl::class.java)
+    val logger: Logger = LoggerFactory.getLogger(FormularioRepositoryImpl::class.java)
 
 
     override fun findAllProcessos(): Flux<Processo> {
