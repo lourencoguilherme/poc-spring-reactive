@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import reactor.core.publisher.Flux
 
 @Repository
 class UserRepositoryImpl(
@@ -22,12 +23,11 @@ class UserRepositoryImpl(
         .baseUrl("$factoryUrl")
         .build()
 
-    override suspend fun findAllUsers(): List<User> {
-        println("---> " + "just")
+    override suspend fun findAllUsers(): Flux<User> {
         val uri = "/users";
-        val responseEntity = webClient.find<MutableList<UserEntity>>(uri)
-
-        return responseEntity?.map { it.toUser() } ?: emptyList()
+        return webClient.get()
+            .uri(uri)
+            .retrieve().bodyToFlux(User::class.java)
     }
 
 

@@ -44,4 +44,4 @@ app:
     dynamodb:
       endpoint: "http://localhost:4566"
       tables:
-        users: "users"
+        users: "students"

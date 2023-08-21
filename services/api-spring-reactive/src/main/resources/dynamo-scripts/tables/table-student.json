@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "studentId",
+      "AttributeType": "N"
+    }
+  ],
+  "TableName": "students",
+  "KeySchema": [
+    {
+      "AttributeName": "studentId",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

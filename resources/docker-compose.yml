@@ -52,8 +52,8 @@ services:
       AWS_DEFAULT_REGION: 'us-east-1'
     command:
       'dynamodb create-table
-      --table-name users
-      --attribute-definitions AttributeName=userId,AttributeType=S
-      --key-schema AttributeName=userId,KeyType=HASH
+      --table-name students
+      --attribute-definitions AttributeName=studentId,AttributeType=S
+      --key-schema AttributeName=studentId,KeyType=HASH
       --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5
       --endpoint-url http://host.docker.internal:4566'

@@ -1,4 +1,4 @@
-package com.example.springbootkotlinreactiveexample.util
+/*package com.example.springbootkotlinreactiveexample.util
 
 import io.micrometer.context.ContextSnapshot
 import io.micrometer.observation.Observation
@@ -38,3 +38,4 @@ suspend inline fun observeCtx(crossinline f: () -> Unit) {
         }
     }.awaitSingleOrNull()
 }
+*/
