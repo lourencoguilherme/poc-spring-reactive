@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "processoId",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "processos",
+  "KeySchema": [
+    {
+      "AttributeName": "processoId",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

@@ -39,6 +39,5 @@ class DynamoConfiguration(
             .region(Region.of(region))
             .credentialsProvider(DefaultCredentialsProvider.builder().build())
             .build()
-
     }
 }

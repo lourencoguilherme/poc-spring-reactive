@@ -15,7 +15,7 @@ import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest
 
 @Repository
 class StudentRepositoryImpl(
-    @Value("\${app.aws.dynamodb.tables.users}") private val tableName: String,
+    @Value("\${app.aws.dynamodb.tables.students}") private val tableName: String,
     dynamoDbEnhancedClient: DynamoDbEnhancedAsyncClient
 ) : StudentRepository {
 
