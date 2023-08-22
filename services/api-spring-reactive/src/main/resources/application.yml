@@ -49,3 +49,4 @@ app:
         students: "students"
         processos: "processos"
         formularios: "formularios"
+        camposentrada: "campos_formulario_entrada"

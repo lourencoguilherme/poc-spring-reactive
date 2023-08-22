@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 import java.util.UUID
 
 @RestController
-@RequestMapping(path = ["/formularios"], produces = [APPLICATION_JSON_VALUE])
+@RequestMapping(path = ["/v1/formularios"], produces = [APPLICATION_JSON_VALUE])
 class FormularioController(
     private val formularioRepository: FormularioRepository
 ) {

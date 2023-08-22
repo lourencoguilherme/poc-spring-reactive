@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "campoFormularioEntradaId",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "campos_formulario_entrada",
+  "KeySchema": [
+    {
+      "AttributeName": "campoFormularioEntradaId",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 10
+  }
+}

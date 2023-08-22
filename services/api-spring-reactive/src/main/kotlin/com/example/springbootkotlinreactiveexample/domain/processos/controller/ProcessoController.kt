@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 import java.util.UUID
 
 @RestController
-@RequestMapping(path = ["/processos"], produces = [APPLICATION_JSON_VALUE])
+@RequestMapping(path = ["/v1/processos"], produces = [APPLICATION_JSON_VALUE])
 class ProcessoController(
     private val processoRepository: ProcessoRepository
 ) {

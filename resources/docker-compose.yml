@@ -42,7 +42,7 @@ services:
       - localstack
 
   awscli:
-    image: banst/awscli
+    image: amazon/aws-cli
     container_name: awscli-docker
     depends_on:
       - localstack
