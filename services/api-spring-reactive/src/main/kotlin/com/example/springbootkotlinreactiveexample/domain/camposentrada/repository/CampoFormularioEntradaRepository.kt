@@ -7,9 +7,9 @@ import java.util.*
 
 interface CampoFormularioEntradaRepository {
 
-    fun findAll(): Flux<CampoFormularioEntrada>
+    fun findAll(formularioId: UUID): Flux<CampoFormularioEntrada>
 
-    fun findOne(id: UUID, formularioId: UUID): Mono<CampoFormularioEntrada>
+    fun findOne(id: UUID, formularioId: UUID): Flux<CampoFormularioEntrada>
 
     fun create(student: CampoFormularioEntrada): Mono<CampoFormularioEntrada>
 

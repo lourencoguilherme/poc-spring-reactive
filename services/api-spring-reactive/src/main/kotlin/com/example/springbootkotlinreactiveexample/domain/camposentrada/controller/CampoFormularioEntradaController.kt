@@ -15,12 +15,12 @@ class CampoFormularioEntradaController(
 ) {
 
     @GetMapping
-    fun findAllStudents(): Flux<CampoFormularioEntrada> {
-        return formularioRepository.findAll()
+    fun findAllStudents(@PathVariable formularioId: UUID): Flux<CampoFormularioEntrada>? {
+        return formularioRepository.findAll(formularioId)
     }
 
     @GetMapping(path = ["/{id}"])
-    fun findStudentById(@PathVariable formularioId: UUID, @PathVariable id: UUID): Mono<CampoFormularioEntrada> {
+    fun findStudentById(@PathVariable formularioId: UUID, @PathVariable id: UUID): Flux<CampoFormularioEntrada> {
         return formularioRepository.findOne(id, formularioId);
     }
 

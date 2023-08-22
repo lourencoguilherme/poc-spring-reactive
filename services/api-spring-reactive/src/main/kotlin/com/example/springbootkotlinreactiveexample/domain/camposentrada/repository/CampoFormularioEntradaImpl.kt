@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient
-import software.amazon.awssdk.enhanced.dynamodb.Key
-import software.amazon.awssdk.enhanced.dynamodb.TableSchema
-import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional.keyEqualTo
+import software.amazon.awssdk.enhanced.dynamodb.*
 import software.amazon.awssdk.enhanced.dynamodb.model.ScanEnhancedRequest
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.util.*
+import java.util.Map
+
 
 @Repository
 class CampoFormularioEntradaImpl(
@@ -26,20 +25,50 @@ class CampoFormularioEntradaImpl(
     val logger: Logger = LoggerFactory.getLogger(CampoFormularioEntradaImpl::class.java)
 
 
-    override fun findAll(): Flux<CampoFormularioEntrada> {
+    override fun findAll(formularioId: UUID): Flux<CampoFormularioEntrada> {
 
-        logger.info("=> findAllStudents :: tableName {}", tableName)
+        val expression = Expression.builder()
+            .expressionValues(
+                Map.of(
+                    ":formularioId", AttributeValue.fromS("$formularioId")
+                )
+            )
+            .expression("formularioId = :formularioId")
+            .build()
+        val scanEnhancedRequest = ScanEnhancedRequest.builder()
+            .filterExpression(expression).consistentRead(true).build()
 
-        return Flux.from(mappedTable.scan(ScanEnhancedRequest.builder().consistentRead(true).build()).items())
+        val providerPage = mappedTable.scan(scanEnhancedRequest)
+        return Flux.from(providerPage.items())
 
     }
 
-    override fun findOne(id: UUID, formularioId: UUID): Mono<CampoFormularioEntrada> {
+    override fun findOne(campoFormularioEntradaId: UUID, formularioId: UUID): Flux<CampoFormularioEntrada> {
 
-        logger.info("=> findOne :: id {} tableName {}", id, tableName)
-        val key = Key.builder().partitionValue("$id").partitionValue("$formularioId") .build()
-        return Mono.fromFuture(mappedTable.getItem(key))
+        logger.info("=> findOne :: id {} tableName {}", campoFormularioEntradaId, tableName)
+        val key = Key.builder().partitionValue("$campoFormularioEntradaId").partitionValue("$formularioId") .build()
+
+
+        val whereClause = "formularioId = :formularioId and campoFormularioEntradaId = :campoFormularioEntradaId"
+        val expression = Expression.builder()
+            /*.expressionNames(
+                Map.of(
+                    "#formularioId", "formularioId",
+                    "#campoFormularioEntradaId", "campoFormularioEntradaId"
+                )
+            )*/
+            .expressionValues(Map.of(
+                ":formularioId", AttributeValue.fromS("$formularioId"),
+                ":campoFormularioEntradaId", AttributeValue.fromS("$campoFormularioEntradaId")))
+            .expression(whereClause)
+            .build()
+        val scanEnhancedRequest = ScanEnhancedRequest.builder().filterExpression(expression)
+        val providerPage = mappedTable.scan(scanEnhancedRequest.consistentRead(true).build())
+        return Flux.from(providerPage.items())
+        /*return Mono.fromFuture(mappedTable.getItem(key))
             .doOnError { logger.error("Exception while retrieving ${CampoFormularioEntrada::class.java.simpleName} information - $it") }
+
+         */
 
     }
 
@@ -49,5 +78,22 @@ class CampoFormularioEntradaImpl(
             .map { entity }
             .doOnError { logger.error("Exception while saving ${CampoFormularioEntrada::class.java.simpleName} information - $it") }
 
+    }
+
+    private fun buildScanRequest(
+        identifier: String,
+        limit: Int,
+        terms: String,
+        filterExpression: Expression
+    ): ScanEnhancedRequest? {
+        val scanEnhancedRequestBuilder = ScanEnhancedRequest.builder()
+            .limit(limit)
+        if (!identifier.isEmpty()) {
+            scanEnhancedRequestBuilder.exclusiveStartKey(Map.of("id", AttributeValue.fromS(identifier)))
+        }
+        if (!terms.isEmpty()) {
+            scanEnhancedRequestBuilder.filterExpression(filterExpression)
+        }
+        return scanEnhancedRequestBuilder.build()
     }
 }
