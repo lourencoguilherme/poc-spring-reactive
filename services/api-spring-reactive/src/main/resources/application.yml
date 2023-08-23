@@ -50,3 +50,10 @@ app:
         processos: "processos"
         formularios: "formularios"
         camposentrada: "campos_formulario_entrada"
+  mongodb:
+    username: mango
+    database: kotlin_crud
+    password: fruit
+    port: 27017
+    host: localhost
+    userLocation: admin

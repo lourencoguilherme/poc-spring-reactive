@@ -2,8 +2,6 @@ package com.example.springbootkotlinreactiveexample.domain.user.controller
 
 import com.example.springbootkotlinreactiveexample.domain.user.model.User
 import com.example.springbootkotlinreactiveexample.domain.user.service.UserService
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
@@ -15,13 +13,16 @@ import java.time.LocalDateTime
 class UserController(
     private val service: UserService
 ) {
-    private var count = 0;
     @GetMapping("/users")
-    suspend fun test(): Flux<User> {
+    suspend fun test(): Flux<Tuple2<Long, User>> {
         println("---Start get Playlists by WEBFLUX--- ${LocalDateTime.now()}")
-        val valor = count++
         val resonse = service.findAllUsers()
-        println("=> users :: count {$valor}")
-        return resonse
+        val interval = Flux.interval(Duration.ofSeconds(10))
+        return Flux.zip(interval, resonse)
+    }
+    @GetMapping("/block")
+    suspend fun block(): String {
+        Thread.sleep(100_000)
+        return "teste"
     }
 }

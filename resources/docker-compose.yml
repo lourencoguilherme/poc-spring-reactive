@@ -57,3 +57,31 @@ services:
       --key-schema AttributeName=studentId,KeyType=HASH
       --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5
       --endpoint-url http://host.docker.internal:4566'
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mango
+      - MONGO_INITDB_ROOT_PASSWORD=fruit
+      - MONGO_INITDB_DATABASE=kotlin_crud
+    restart: unless-stopped
+    ports:
+      - "47017:27017" #Different port to not conflict with any possible running MongoDB installation
+
+  mongo-express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=mango
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=fruit
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=password
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    ports:
+      - "8002:8081"
